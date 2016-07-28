@@ -1,0 +1,124 @@
+ext {
+    //base project
+    androidApplicationName = 'Quizzstorm'
+    androidApplicationId = 'pl.rzagorski.quizzstorm'
+    androidBuildToolsVersion = "23.0.3"
+    androidMinSdkVersion = 16
+    androidTargetSdkVersion = 23
+    androidCompileSdkVersion = 23
+
+    //support libraries
+    supportLibraryVersion = '24.1.0'
+
+    //view libraries
+    androidSwipeLayoutVersion = '1.2.0'
+
+    //dependencyInjection
+    daggerVersion = '2.4'
+    butterknifeVersion = '8.0.1'
+    nucleusVersion = '3.0.1'
+
+    //reactive programming libraries
+    rxJavaVersion = '1.1.6'
+    rxAndroidVersion = '1.2.1'
+
+    //test libraries
+    junitVersion = '4.12'
+    dexmaker_mockitoVersion = '1.2'
+    mockitoVersion = '2.0.54-beta'
+    runner_version = '0.5'
+    espresso_version = '2.2.1'
+
+    //REST libraries
+    retrofitVersion = '2.1.0'
+    okHttpVersion = '3.4.1'
+    okHttpLoggingVersion = '3.4.1'
+
+    //Database libraries
+    greendaoVersion = '2.0.0'
+
+    supportDependencies = [
+            supportv4       :   "com.android.support:support-v4:${supportLibraryVersion}",
+            //http://developer.android.com/tools/support-library/features.html#v4
+            multidex        :   "com.android.support:multidex:${supportLibraryVersion}",
+            //http://developer.android.com/tools/support-library/features.html#multidex
+            appCompatv7     :   "com.android.support:appcompat-v7:${supportLibraryVersion}",
+            //http://developer.android.com/tools/support-library/features.html#v7
+            cardViewv7      :   "com.android.support:cardview-v7:${supportLibraryVersion}",
+            gridLayoutv7    :   "com.android.support:gridlayout-v7:${supportLibraryVersion}",
+            palettev7       :   "com.android.support:palette-v7:${supportLibraryVersion}",
+            recyclerView    :   "com.android.support:recyclerview-v7:${supportLibraryVersion}",
+            design          :   "com.android.support:design:${supportLibraryVersion}",
+            //http://developer.android.com/tools/support-library/features.html#design
+            percent         :   "com.android.support:percent:${supportLibraryVersion}",
+            //http://inthecheesefactory.com/blog/know-percent-support-library/en
+            customTabs      :   "com.android.support:customtabs:${supportLibraryVersion}",
+            //https://developer.chrome.com/multidevice/android/customtabs
+            supportAnnotations: "com.android.support:support-annotations:${supportLibraryVersion}",
+
+            flexBoxLayout   :   'com.google.android:flexbox:0.2.2'
+    ]
+
+    viewDependencies = [
+            picasso             :   "com.squareup.picasso:picasso:2.5.2",
+            androidSwipeLayout  :   "com.daimajia.swipelayout:library:1.2.0",
+            //https://github.com/daimajia/AndroidSwipeLayout
+            mpAndroidChart      :   "com.github.PhilJay:MPAndroidChart:v3.0.0-beta1"
+    ]
+
+    diDependencies = [
+            dagger          :   "com.google.dagger:dagger:$daggerVersion",
+            daggerCompiler  :   "com.google.dagger:dagger-compiler:${daggerVersion}",
+            butterknife     :   "com.jakewharton:butterknife:${butterknifeVersion}",
+            butterknifeCompiler:"com.jakewharton:butterknife-compiler:${butterknifeVersion}",
+            nucleus          :   "info.android15.nucleus:nucleus:${nucleusVersion}",
+    ]
+
+    fontDependencies = [
+            calligraphy     :    "uk.co.chrisjenx:calligraphy:2.1.0"
+            //https://github.com/chrisjenx/Calligraphy
+    ]
+
+    rxDependencies = [
+            rxJava          :   "io.reactivex:rxjava:${rxJavaVersion}",
+            rxAndroid       :   "io.reactivex:rxandroid:${rxAndroidVersion}"
+
+            //https://github.com/JakeWharton/RxBinding
+    ]
+
+    androidTestDependencies = [
+            junit           :   "junit:junit:${junitVersion}",
+            dexmaker_mockito:   "com.google.dexmaker:dexmaker-mockito:${dexmaker_mockitoVersion}",
+            supportTestRunner:  "com.android.support.test:runner:${runner_version}",
+            supportTestRules:   "com.android.support.test:rules:${runner_version}",
+            espresso        :   "com.android.support.test.espresso:espresso-core:${espresso_version}",
+            espresso_contrib:   "com.android.support.test.espresso:espresso-contrib:${espresso_version}"
+    ]
+
+    testDependencies = [
+            junit           :   "junit:junit:${junitVersion}",
+            mockito         :   "org.mockito:mockito-core:${mockitoVersion}"
+    ]
+
+    restDependencies = [
+            retrofit        :   "com.squareup.retrofit2:retrofit:${retrofitVersion}",
+            retrofitGsonConverter : "com.squareup.retrofit2:converter-gson:${retrofitVersion}",
+            retrofitXmlConverter  : "com.squareup.retrofit2:converter-simplexml${retrofitVersion}",
+            retrofitRxJavaAdapter : "com.squareup.retrofit2:adapter-rxjava:${retrofitVersion}",
+            okHttpLogging         : "com.squareup.okhttp3:logging-interceptor:${okHttpLoggingVersion}"
+            //http://square.github.io/retrofit/
+            //http://inthecheesefactory.com/blog/retrofit-2.0/en
+            //https://futurestud.io/blog/retrofit-getting-started-and-android-client
+    ]
+
+    databaseDependencies = [
+            greendao        :   "de.greenrobot:greendao:${greendaoVersion}",
+            //https://github.com/greenrobot/greenDAO
+            greendaoGenerator:  "de.greenrobot:greendao-generator:${greendaoVersion}"
+            //https://realm.io/docs/java/latest/#getting-started
+    ]
+
+    loggerDependencies = [
+            logger          :   "com.github.orhanobut:logger:1.12"
+    ]
+}

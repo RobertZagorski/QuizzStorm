@@ -1,0 +1,116 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.getkeepsafe.dexcount'
+
+def changeApkName = { variant ->
+    variant.outputs.each { output ->
+        def apk = output.outputFile;
+        def newName = androidApplicationName;
+        if (variant.buildType.name == "release") {
+            newName += "-v" + variant.mergedFlavor.versionName + "-release.apk";
+        } else {
+            newName += "-v" + variant.mergedFlavor.versionName + ".apk";
+        }
+
+        if (!output.zipAlign) {
+            newName = newName.replace(".apk", "-unaligned.apk");
+        }
+        output.outputFile = new File(apk.parentFile, newName);
+
+        println 'INFO: Set outputFile to ' + output.outputFile + " for [" + output.name + "]"
+    }
+}
+
+android {
+    compileSdkVersion androidCompileSdkVersion
+    buildToolsVersion androidBuildToolsVersion
+
+    defaultConfig {
+        applicationId androidApplicationId
+        minSdkVersion androidMinSdkVersion
+        targetSdkVersion androidTargetSdkVersion
+        versionCode 100000
+        versionName = "1.0.0"
+        testInstrumentationRunner 'android.support.test.runner.AndroidJUnitRunner'
+    }
+    buildTypes {
+        def BOOLEAN = "boolean"
+        def STRING = "String"
+        def TRUE = "true"
+        def FALSE = "false"
+        def DEBUG_BUILD = "DEBUG_BUILD"
+
+        all { buildType ->
+            Properties endpoint = new Properties();
+            endpoint.load(new FileInputStream(file(rootProject.file("endpoints.properties"))))
+            buildConfigField STRING, "API_ENDPOINT", endpoint["base_url"]
+            buildConfigField STRING, "API_PATH_QUIZ_LIST", endpoint["quiz_list"]
+            buildConfigField STRING, "API_PATH_QUIZ_DETAILS", endpoint["quiz_details"]
+        }
+
+        release {
+            buildConfigField BOOLEAN, DEBUG_BUILD, FALSE
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            //signingConfig signingConfigs.release
+        }
+
+        debug {
+            versionNameSuffix '.debug'
+            applicationIdSuffix '.debug'
+            buildConfigField BOOLEAN, DEBUG_BUILD, TRUE
+            //signingConfig signingConfigs.debug
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                changeApkName(variant)
+            }
+        }
+    }
+
+    sourceSets {
+        def commonTestDir = 'src/commonTest/java'
+        test {
+            java.srcDir commonTestDir
+        }
+        androidTest {
+            java.srcDir commonTestDir
+        }
+    }
+}
+
+dependencies {
+    compile supportDependencies.design
+    compile loggerDependencies.logger
+    compile viewDependencies.picasso
+
+    apt diDependencies.daggerCompiler
+    compile diDependencies.dagger
+    apt diDependencies.butterknifeCompiler
+    compile diDependencies.butterknife
+    compile diDependencies.nucleus
+
+    compile restDependencies.retrofit
+    compile restDependencies.retrofitGsonConverter
+    compile restDependencies.retrofitRxJavaAdapter
+    compile restDependencies.okHttpLogging
+
+    compile databaseDependencies.greendao
+
+    compile rxDependencies.rxJava
+    compile rxDependencies.rxAndroid
+
+    androidTestCompile androidTestDependencies.junit
+    androidTestCompile androidTestDependencies.dexmaker_mockito
+    androidTestCompile androidTestDependencies.supportTestRunner
+    androidTestCompile androidTestDependencies.supportTestRules
+    androidTestCompile supportDependencies.supportAnnotations
+    androidTestCompile androidTestDependencies.espresso
+    androidTestApt diDependencies.daggerCompiler
+
+    testCompile testDependencies.junit
+    testCompile testDependencies.mockito
+    testApt diDependencies.daggerCompiler
+}
