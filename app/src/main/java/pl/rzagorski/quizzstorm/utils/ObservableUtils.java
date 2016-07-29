@@ -2,6 +2,7 @@ package pl.rzagorski.quizzstorm.utils;
 
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -45,5 +46,14 @@ public class ObservableUtils {
                 return observable.observeOn(AndroidSchedulers.mainThread());
             }
         };
+    }
+
+    public static <T extends Observable<V>, V, Z> Observable<Z> zipWith(T element1Obs, Z element2) {
+        return element1Obs.zipWith(Observable.just(element2), new Func2<V, Z, Z>() {
+            @Override
+            public Z call(V v, Z z) {
+                return z;
+            }
+        });
     }
 }

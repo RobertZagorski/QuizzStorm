@@ -83,6 +83,7 @@ android {
 
 dependencies {
     compile supportDependencies.design
+    compile supportDependencies.cardViewv7
     compile loggerDependencies.logger
     compile viewDependencies.picasso
 

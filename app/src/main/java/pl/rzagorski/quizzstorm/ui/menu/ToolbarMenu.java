@@ -20,22 +20,12 @@ public class ToolbarMenu {
 
     public ToolbarMenu(Activity activity) {
         mActivity = activity;
-        //mToolbar = (Toolbar) mActivity.findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) mActivity.findViewById(R.id.toolbar);
         if (mToolbar == null) {
             return;
         }
         mTitle = (AppCompatTextView) mToolbar.findViewById(R.id.title);
         ((AppCompatActivity) mActivity).setSupportActionBar(mToolbar);
-        //setTitle(null);
-    }
-
-    public void setTitle(CharSequence title) {
-        if (mTitle == null) {
-            return;
-        }
-        //((AppCompatActivity) mActivity).getSupportActionBar().setTitle(title);
-        String stringTitle = title.toString();
-        mTitle.setText(stringTitle.toUpperCase());
     }
 
     public void showBackArrow() {

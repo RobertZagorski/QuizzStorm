@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <array name="blends">
+        <item>@array/blend0</item>
+        <item>@array/blend1</item>
+        <item>@array/blend2</item>
+        <item>@array/blend3</item>
+        <item>@array/blend4</item>
+        <item>@array/blend5</item>
+    </array>
+
+    <array name="blend0">
+        <item>0</item>
+        <item>0</item>
+        <item>#FFFFFF</item>
+    </array>
+
+    <array name="blend1">
+        <item>1</item>
+        <item>20</item>
+        <item>#FFF3E0</item>
+    </array>
+
+    <array name="blend2">
+        <item>21</item>
+        <item>40</item>
+        <item>#FFECB3</item>
+    </array>
+
+    <array name="blend3">
+        <item>41</item>
+        <item>60</item>
+        <item>#FFE082</item>
+    </array>
+
+    <array name="blend4">
+        <item>61</item>
+        <item>80</item>
+        <item>#FFD54F</item>
+    </array>
+
+    <array name="blend5">
+        <item>81</item>
+        <item>100</item>
+        <item>#FFCA28</item>
+    </array>
+</resources>

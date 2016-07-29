@@ -26,12 +26,6 @@ public abstract class MenuActivity extends BaseActivity {
         mToolbarMenu.changeToolbarVisibility(visibility);
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        super.setTitle("");
-        mToolbarMenu.setTitle(title);
-    }
-
     public abstract int getContentViewId();
 
     public Menu getMenu() {
