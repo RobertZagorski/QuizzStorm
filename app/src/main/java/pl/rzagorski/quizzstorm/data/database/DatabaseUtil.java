@@ -21,7 +21,6 @@ import pl.rzagorski.quizzstorm.model.database.DaoSession;
 import pl.rzagorski.quizzstorm.utils.ObservableUtils;
 import rx.Observable;
 import rx.Subscriber;
-import rx.functions.Func3;
 
 /**
  * Created by Robert Zagorski on 14.08.15.
@@ -54,84 +53,67 @@ public class DatabaseUtil {
         return session;
     }
 
-    public <T> Observable<List<T>> selectElementsAsync(DaoSession session, AbstractDao<T, ?> absDao) {
-        return Observable.just(selectElements(session, absDao));
+    public <T> Observable<List<T>> selectElementsAsync(AbstractDao<T, ?> absDao) {
+        return Observable.just(selectElements(absDao));
     }
 
-    public <T> Observable<T> selectElementByConditionAsync(DaoSession session,
-                                                           AbstractDao<T, ?> absDao,
+    public <T> Observable<T> selectElementByConditionAsync(AbstractDao<T, ?> absDao,
                                                            WhereCondition... conditions) {
-        return Observable.just(selectElementByCondition(session, absDao, conditions));
+        return Observable.just(selectElementByCondition(absDao, conditions));
     }
 
-    public <T> Observable<List<T>> selectElementsByConditionAsync(DaoSession session,
-                                                                  AbstractDao<T, ?> absDao,
+    public <T> Observable<List<T>> selectElementsByConditionAsync(AbstractDao<T, ?> absDao,
                                                                   WhereCondition... conditions) {
-        return Observable.just(selectElementsByCondition(session, absDao, conditions));
+        return Observable.just(selectElementsByCondition(absDao, conditions));
     }
 
-    public <T> Observable<List<T>> selectElementsByConditionAsync(DaoSession session,
-                                                                  AbstractDao<T, ?> absDao,
+    public <T> Observable<List<T>> selectElementsByConditionAsync(AbstractDao<T, ?> absDao,
                                                                   Property sortProperty,
                                                                   String sortStrategy,
                                                                   WhereCondition... conditions) {
-        return Observable.just(selectElementsByConditionAndSort(session, absDao, sortProperty, sortStrategy, conditions));
+        return Observable.just(selectElementsByConditionAndSort(absDao, sortProperty, sortStrategy, conditions));
     }
 
-    public <T> Observable<List<T>> selectElementsByConditionAsync(DaoSession session,
-                                                                  AbstractDao<T, ?> absDao,
+    public <T> Observable<List<T>> selectElementsByConditionAsync(AbstractDao<T, ?> absDao,
                                                                   Property sortProperty,
                                                                   boolean nullHandling,
                                                                   String sortStrategy,
                                                                   WhereCondition... conditions) {
-        return Observable.just(selectElementsByConditionAndSortWithNullHandling(session, absDao, sortProperty, nullHandling, sortStrategy, conditions));
+        return Observable.just(selectElementsByConditionAndSortWithNullHandling(absDao, sortProperty, nullHandling, sortStrategy, conditions));
     }
 
-    public <T> Observable<List<T>> insertElementsAsync(final DaoSession session,
-                                                       final AbstractDao<T, ?> absDao,
+    public <T> Observable<List<T>> insertElementsAsync(final AbstractDao<T, ?> absDao,
                                                        final T[] elements) {
         return Observable.create(new Observable.OnSubscribe<List<T>>() {
             @Override
             public void call(Subscriber<? super List<T>> subscriber) {
                 List<T> elementsList = new ArrayList<T>();
                 Collections.addAll(elementsList, elements);
-                insertElements(session, absDao, elementsList);
+                insertElements(absDao, elementsList);
                 subscriber.onNext(elementsList);
                 subscriber.onCompleted();
             }
         }).compose(ObservableUtils.<List<T>>applySchedulers());
     }
 
-    public <T> Observable<T> insertElementAsync(final DaoSession session,
-                                                final AbstractDao<T, ?> absDao,
+    public <T> Observable<List<T>> insertElementsAsync(AbstractDao<T, ?> absDao,
+                                                       List<T> elementList) {
+        return Observable.just(insertElements(absDao, elementList));
+    }
+
+    public <T> Observable<T> insertElementAsync(final AbstractDao<T, ?> absDao,
                                                 final T element) {
-        return Observable.create(new Observable.OnSubscribe<T>() {
-            @Override
-            public void call(Subscriber<? super T> subscriber) {
-                insertElement(session, absDao, element);
-                subscriber.onNext(element);
-                subscriber.onCompleted();
-            }
-        }).compose(ObservableUtils.<T>applySchedulers());
+        return Observable.just(insertElement(absDao, element));
     }
 
     public <T> Observable<T> deleteElementAsync(final DaoSession session,
                                                 final AbstractDao<T, ?> absDao,
                                                 final T element) {
-        Observable<DaoSession> sessionObs = Observable.just(session);
-        Observable<? extends AbstractDao<T, ?>> classObs = Observable.just(absDao);
-        Observable<T> elementsObs = Observable.just(element);
+        return Observable.just(deleteElement(session, absDao, element));
 
-        return Observable.zip(sessionObs, classObs, elementsObs, new Func3<DaoSession, AbstractDao<T, ?>, T, T>() {
-            @Override
-            public T call(DaoSession session, AbstractDao<T, ?> dao, T t) {
-                deleteElement(session, dao, t);
-                return t;
-            }
-        });
     }
 
-    public <T> List<T> selectElements(DaoSession session, AbstractDao<T, ?> dao) {
+    public <T> List<T> selectElements(AbstractDao<T, ?> dao) {
         if (dao == null) {
             return null;
         }
@@ -139,29 +121,30 @@ public class DatabaseUtil {
         return qb.list();
     }
 
-    public <T> void insertElements(DaoSession session, AbstractDao<T, ?> absDao, List<T> items) {
+    public <T> List<T> insertElements(AbstractDao<T, ?> absDao, List<T> items) {
         if (items == null || items.size() == 0 || absDao == null) {
-            return;
+            return null;
         }
         absDao.insertOrReplaceInTx(items);
+        return items;
     }
 
-    public <T> void insertElement(DaoSession session, AbstractDao<T, ?> absDao, T item) {
+    public <T> T insertElement(AbstractDao<T, ?> absDao, T item) {
         if (item == null || absDao == null) {
-            return;
+            return null;
         }
         absDao.insertOrReplaceInTx(item);
+        return item;
     }
 
-    public <T> void updateElements(DaoSession session, AbstractDao<T, ?> absDao, List<T> items) {
+    public <T> void updateElements(AbstractDao<T, ?> absDao, List<T> items) {
         if (items == null || items.size() == 0 || absDao == null) {
             return;
         }
         absDao.updateInTx(items);
     }
 
-    public <T> T selectElementByCondition(DaoSession session,
-                                          AbstractDao<T, ?> absDao,
+    public <T> T selectElementByCondition(AbstractDao<T, ?> absDao,
                                           WhereCondition... conditions) {
         if (absDao == null) {
             return null;
@@ -174,8 +157,7 @@ public class DatabaseUtil {
         return items != null && items.size() > 0 ? items.get(0) : null;
     }
 
-    public <T> List<T> selectElementsByCondition(DaoSession session,
-                                                 AbstractDao<T, ?> absDao,
+    public <T> List<T> selectElementsByCondition(AbstractDao<T, ?> absDao,
                                                  WhereCondition... conditions) {
         if (absDao == null) {
             return null;
@@ -188,8 +170,7 @@ public class DatabaseUtil {
         return items != null ? items : null;
     }
 
-    public <T> List<T> selectElementsByConditionAndSort(DaoSession session,
-                                                        AbstractDao<T, ?> absDao,
+    public <T> List<T> selectElementsByConditionAndSort(AbstractDao<T, ?> absDao,
                                                         Property sortProperty,
                                                         String sortStrategy,
                                                         WhereCondition... conditions) {
@@ -205,14 +186,13 @@ public class DatabaseUtil {
         return items != null ? items : null;
     }
 
-    public <T> List<T> selectElementsByConditionAndSortWithNullHandling(DaoSession session,
-                                                                        AbstractDao<T, ?> absDao,
+    public <T> List<T> selectElementsByConditionAndSortWithNullHandling(AbstractDao<T, ?> absDao,
                                                                         Property sortProperty,
                                                                         boolean handleNulls,
                                                                         String sortStrategy,
                                                                         WhereCondition... conditions) {
         if (!handleNulls) {
-            return selectElementsByConditionAndSort(session, absDao, sortProperty, sortStrategy, conditions);
+            return selectElementsByConditionAndSort(absDao, sortProperty, sortStrategy, conditions);
         }
         if (absDao == null) {
             return null;
@@ -226,8 +206,15 @@ public class DatabaseUtil {
         return items != null ? items : null;
     }
 
-    public <T> void deleteElementsByCondition(DaoSession session,
-                                              AbstractDao<T, ?> absDao,
+    public <T, V extends Class> List<T> selectByJoin(AbstractDao<T, ?> absDao,
+                                                     V className,
+                                                     Property property, WhereCondition whereCondition) {
+        QueryBuilder<T> qb = absDao.queryBuilder();
+        qb.join(className, property).where(whereCondition);
+        return qb.list();
+    }
+
+    public <T> void deleteElementsByCondition(AbstractDao<T, ?> absDao,
                                               WhereCondition... conditions) {
         if (absDao == null) {
             return;
@@ -240,22 +227,31 @@ public class DatabaseUtil {
         absDao.deleteInTx(list);
     }
 
-    public <T> void deleteElement(DaoSession session, AbstractDao<T, ?> absDao, T object) {
+    public <T> T deleteElement(DaoSession session, AbstractDao<T, ?> absDao, T object) {
         if (absDao == null) {
-            return;
+            return null;
         }
         absDao.delete(object);
         session.clear();
+        return object;
     }
 
-    public <T> void deleteAllFromTable(DaoSession session, AbstractDao<T, ?> absDao) {
+    public <T, V extends Class> void deleteByJoin(AbstractDao<T, ?> absDao,
+                                                  V className,
+                                                  Property property, WhereCondition whereCondition) {
+        QueryBuilder<T> qb = absDao.queryBuilder();
+        qb.join(className, property).where(whereCondition);
+        qb.buildDelete().executeDeleteWithoutDetachingEntities();
+    }
+
+    public <T> void deleteAllFromTable(AbstractDao<T, ?> absDao) {
         if (absDao == null) {
             return;
         }
         absDao.deleteAll();
     }
 
-    public <T> long countElements(DaoSession session, AbstractDao<T, ?> absDao) {
+    public <T> long countElements(AbstractDao<T, ?> absDao) {
         if (absDao == null) {
             return 0;
         }

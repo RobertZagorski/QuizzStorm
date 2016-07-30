@@ -1,5 +1,7 @@
 package pl.rzagorski.quizzstorm.utils;
 
+import android.util.Pair;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func2;
@@ -55,5 +57,18 @@ public class ObservableUtils {
                 return z;
             }
         });
+    }
+
+    public static <T extends Observable<V>, V, Z> Observable<Pair<V, Z>> pairWith(T element1Obs, Z element2) {
+        return element1Obs.zipWith(Observable.just(element2), new Func2<V, Z, Pair<V, Z>>() {
+            @Override
+            public Pair<V, Z> call(V v, Z z) {
+                return new Pair<V, Z>(v, z);
+            }
+        });
+    }
+
+    public static <V, Z> Pair<V, Z> pairWith(V element1, Z element2) {
+        return new Pair<V, Z>(element1, element2);
     }
 }

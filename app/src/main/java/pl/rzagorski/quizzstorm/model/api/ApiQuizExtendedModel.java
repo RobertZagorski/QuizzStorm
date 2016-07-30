@@ -44,11 +44,15 @@ public class ApiQuizExtendedModel implements LayerTransformer<Quiz> {
     private Double cityCount;
     private Boolean userBattleDone;
 
-    private List<ApiRate> getRates() {
+    public Long getId() {
+        return id;
+    }
+
+    public List<ApiRate> getRates() {
         return rates;
     }
 
-    private List<ApiQuestion> getQuestions() {
+    public List<ApiQuestion> getQuestions() {
         return questions;
     }
 
