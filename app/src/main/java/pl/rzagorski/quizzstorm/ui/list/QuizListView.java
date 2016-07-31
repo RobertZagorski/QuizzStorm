@@ -10,4 +10,5 @@ import pl.rzagorski.quizzstorm.ui.base.MvpView;
  */
 public interface QuizListView extends MvpView {
     void onItemsLoaded(List<ListRow> quizList);
+    void openQuiz();
 }

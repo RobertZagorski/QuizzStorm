@@ -1,6 +1,7 @@
 package pl.rzagorski.quizzstorm;
 
 import android.app.Application;
+import android.support.annotation.Nullable;
 
 import com.orhanobut.logger.AndroidLogTool;
 import com.orhanobut.logger.LogLevel;
@@ -10,6 +11,8 @@ import pl.rzagorski.quizzstorm.dependencyinjection.ApplicationComponent;
 import pl.rzagorski.quizzstorm.dependencyinjection.ApplicationModule;
 import pl.rzagorski.quizzstorm.dependencyinjection.DaggerApplicationComponent;
 import pl.rzagorski.quizzstorm.dependencyinjection.DataModule;
+import pl.rzagorski.quizzstorm.dependencyinjection.list.ListActivityComponent;
+import pl.rzagorski.quizzstorm.dependencyinjection.list.singlequiz.QuizComponent;
 
 
 /**
@@ -17,6 +20,8 @@ import pl.rzagorski.quizzstorm.dependencyinjection.DataModule;
  */
 public class QuizzstormApplication extends Application {
     ApplicationComponent mApplicationComponent;
+    QuizComponent mQuizComponent;
+    ListActivityComponent mListComponent;
 
     @Override
     public void onCreate() {
@@ -56,5 +61,23 @@ public class QuizzstormApplication extends Application {
     // Needed to replace the component with a test specific one
     public void setComponent(ApplicationComponent applicationComponent) {
         mApplicationComponent = applicationComponent;
+    }
+
+    @Nullable
+    public QuizComponent getQuizComponent() {
+        return mQuizComponent;
+    }
+
+    public void setComponent(QuizComponent quizComponent) {
+        mQuizComponent = quizComponent;
+    }
+
+    @Nullable
+    public ListActivityComponent getListComponent() {
+        return mListComponent;
+    }
+
+    public void setListComponent(ListActivityComponent listComponent) {
+        mListComponent = listComponent;
     }
 }

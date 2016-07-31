@@ -13,7 +13,7 @@ import de.greenrobot.daogenerator.Schema;
 public class GreendaoGenerator {
 
     public static void main(String args[]) throws Exception {
-        Schema schema = new Schema(1, "pl.rzagorski.quizstorm.model.database");
+        Schema schema = new Schema(1, "pl.rzagorski.quizzstorm.model.database");
 
         Entity category = schema.addEntity("Category");
         category.addIdProperty();

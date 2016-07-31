@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import pl.rzagorski.quizzstorm.data.ScopeManager;
 import pl.rzagorski.quizzstorm.data.interactor.GetQuizListUseCase;
 import pl.rzagorski.quizzstorm.model.database.Quiz;
 import pl.rzagorski.quizzstorm.model.ui.ListRow;
@@ -20,13 +21,16 @@ import rx.internal.util.SubscriptionList;
  */
 public class ListPresenter extends BasePresenter<QuizListView> {
     GetQuizListUseCase mGetQuizListUseCase;
+    ScopeManager mScopeManager;
     SubscriptionList subscriptionList;
 
-    private List<Quiz> quizList;
+    private List<Quiz> mQuizList;
 
     @Inject
-    public ListPresenter(GetQuizListUseCase getQuizListUseCase) {
+    public ListPresenter(GetQuizListUseCase getQuizListUseCase,
+                         ScopeManager scopeManager) {
         this.mGetQuizListUseCase = getQuizListUseCase;
+        this.mScopeManager = scopeManager;
         subscriptionList = new SubscriptionList();
     }
 
@@ -46,8 +50,8 @@ public class ListPresenter extends BasePresenter<QuizListView> {
 
     public void getQuizList() {
         Subscriber<List<Quiz>> listSubscriber = new ListSubscriber();
-        if (quizList != null) {
-            listSubscriber.onNext(quizList);
+        if (mQuizList != null) {
+            listSubscriber.onNext(mQuizList);
             return;
         }
         Observable<List<Quiz>> listObservable = mGetQuizListUseCase.build(Strategy.LOCAL_AND_API);
@@ -71,6 +75,15 @@ public class ListPresenter extends BasePresenter<QuizListView> {
         return rowList;
     }
 
+    public void onQuizChosen(Long quizId, int position) {
+        Quiz quiz = mQuizList.get(position);
+        if (!quiz.getId().equals(quizId)) {
+
+        }
+        mScopeManager.createQuizComponent(quiz);
+        getView().openQuiz();
+    }
+
     private class ListSubscriber extends DefaultSubscriber<List<Quiz>> {
         @Override
         public void onCompleted() {
@@ -90,6 +103,7 @@ public class ListPresenter extends BasePresenter<QuizListView> {
             if (quizList.isEmpty()) {
                 return;
             }
+            mQuizList = quizList;
             List<ListRow> rowList = createList(quizList);
             getView().onItemsLoaded(rowList);
         }

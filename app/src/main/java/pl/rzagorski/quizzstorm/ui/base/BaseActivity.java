@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 
 import pl.rzagorski.quizzstorm.QuizzstormApplication;
 import pl.rzagorski.quizzstorm.dependencyinjection.ApplicationComponent;
+import pl.rzagorski.quizzstorm.dependencyinjection.list.ListActivityComponent;
+import pl.rzagorski.quizzstorm.dependencyinjection.list.singlequiz.QuizComponent;
 
 /**
  * Created by Robert Zagórski on 2016-06-28.
@@ -19,12 +21,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
     }
 
+    protected QuizzstormApplication getQuizApplication() {
+        return ((QuizzstormApplication) getApplicationContext());
+    }
+
     protected ApplicationComponent getApplicationComponent() {
-        return ((QuizzstormApplication) getApplicationContext()).getApplicationComponent();
+        return getQuizApplication().getApplicationComponent();
     }
 
     protected ApplicationComponent getUserComponent() {
-        return ((QuizzstormApplication) getApplicationContext()).getApplicationComponent();
+        return getQuizApplication().getApplicationComponent();
+    }
+
+    protected ListActivityComponent getListComponent() {
+        return getQuizApplication().getListComponent();
+    }
+
+    protected QuizComponent getQizComponent() {
+        return getQuizApplication().getQuizComponent();
     }
 
     protected Fragment getCurrentFragment() {

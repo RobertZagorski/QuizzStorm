@@ -2,6 +2,8 @@ package pl.rzagorski.quizzstorm.dependencyinjection.list;
 
 import dagger.Subcomponent;
 import pl.rzagorski.quizzstorm.dependencyinjection.ActivityScope;
+import pl.rzagorski.quizzstorm.dependencyinjection.list.singlequiz.QuizComponent;
+import pl.rzagorski.quizzstorm.dependencyinjection.list.singlequiz.QuizModule;
 import pl.rzagorski.quizzstorm.ui.list.ListActivity;
 
 /**
@@ -15,4 +17,5 @@ public interface ListActivityComponent {
 
     ListActivity inject(ListActivity listActivity);
 
+    QuizComponent provide(QuizModule quizModule);
 }

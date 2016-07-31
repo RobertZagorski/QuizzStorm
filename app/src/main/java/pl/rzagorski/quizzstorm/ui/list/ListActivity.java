@@ -1,6 +1,7 @@
 package pl.rzagorski.quizzstorm.ui.list;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,6 +20,7 @@ import pl.rzagorski.quizzstorm.dependencyinjection.list.ListActivityComponent;
 import pl.rzagorski.quizzstorm.dependencyinjection.list.ListActivityModule;
 import pl.rzagorski.quizzstorm.model.ui.ListRow;
 import pl.rzagorski.quizzstorm.ui.menu.MenuActivity;
+import pl.rzagorski.quizzstorm.ui.singlequiz.QuizActivity;
 import pl.rzagorski.quizzstorm.utils.abstracts.RecyclerBaseAdapter;
 import pl.rzagorski.quizzstorm.utils.interfaces.ComponentCreator;
 import pl.rzagorski.quizzstorm.utils.interfaces.RecyclerViewOnItemClickListener;
@@ -30,14 +32,14 @@ public class ListActivity extends MenuActivity implements ComponentCreator<ListA
     ListActivityComponent component;
     RecyclerView recyclerView;
 
-    @Inject ListPresenter presenter;
+    @Inject ListPresenter mPresenter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getComponent().inject(this);
         initView();
-        presenter.attachView(this);
+        mPresenter.attachView(this);
     }
 
     @Override
@@ -53,10 +55,11 @@ public class ListActivity extends MenuActivity implements ComponentCreator<ListA
     @Override
     public ListActivityComponent getComponent() {
         if (component == null) {
-            component = ((QuizzstormApplication) getApplicationContext())
+            QuizzstormApplication application = ((QuizzstormApplication) getApplicationContext());
+            component = application
                     .getApplicationComponent()
                     .provide(new ListActivityModule(this));
-            component.inject(this);
+            application.setListComponent(component);
         }
         return component;
     }
@@ -74,7 +77,7 @@ public class ListActivity extends MenuActivity implements ComponentCreator<ListA
             row.setRowListener(new RecyclerViewOnItemClickListener<ListRow>() {
                 @Override
                 public void onItemClick(View view, ListRow row, int position) {
-                    onRowClick(row);
+                    onRowClick(row, position);
                 }
             });
         }
@@ -82,7 +85,13 @@ public class ListActivity extends MenuActivity implements ComponentCreator<ListA
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 
-    private void onRowClick(ListRow row) {
+    private void onRowClick(ListRow row, int position) {
+        mPresenter.onQuizChosen(row.getId(), position);
+    }
 
+    @Override
+    public void openQuiz() {
+        Intent intent = new Intent(this, QuizActivity.class);
+        startActivity(intent);
     }
 }
