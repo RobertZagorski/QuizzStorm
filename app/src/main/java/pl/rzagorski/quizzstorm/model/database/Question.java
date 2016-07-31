@@ -1,5 +1,6 @@
 package pl.rzagorski.quizzstorm.model.database;
 
+import java.util.List;
 import pl.rzagorski.quizzstorm.model.database.DaoSession;
 import de.greenrobot.dao.DaoException;
 
@@ -26,6 +27,7 @@ public class Question {
     private Photo photoRef;
     private String photoRef__resolvedKey;
 
+    private List<Answer> AnswersRef;
 
     public Question() {
     }
@@ -129,6 +131,28 @@ public class Question {
             photo = photoRef == null ? null : photoRef.getId();
             photoRef__resolvedKey = photo;
         }
+    }
+
+    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
+    public List<Answer> getAnswersRef() {
+        if (AnswersRef == null) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            AnswerDao targetDao = daoSession.getAnswerDao();
+            List<Answer> AnswersRefNew = targetDao._queryQuestion_AnswersRef(id);
+            synchronized (this) {
+                if(AnswersRef == null) {
+                    AnswersRef = AnswersRefNew;
+                }
+            }
+        }
+        return AnswersRef;
+    }
+
+    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
+    public synchronized void resetAnswersRef() {
+        AnswersRef = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

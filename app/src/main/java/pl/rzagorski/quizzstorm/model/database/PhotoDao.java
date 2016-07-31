@@ -27,7 +27,7 @@ public class PhotoDao extends AbstractDao<Photo, String> {
         public final static Property Author = new Property(1, String.class, "author", false, "AUTHOR");
         public final static Property Width = new Property(2, Long.class, "width", false, "WIDTH");
         public final static Property Height = new Property(3, Long.class, "height", false, "HEIGHT");
-        public final static Property MediaId = new Property(4, Long.class, "mediaId", false, "MEDIA_ID");
+        public final static Property MediaId = new Property(4, String.class, "mediaId", false, "MEDIA_ID");
         public final static Property Source = new Property(5, String.class, "source", false, "SOURCE");
         public final static Property Title = new Property(6, String.class, "title", false, "TITLE");
         public final static Property Url = new Property(7, String.class, "url", false, "URL");
@@ -51,7 +51,7 @@ public class PhotoDao extends AbstractDao<Photo, String> {
                 "\"AUTHOR\" TEXT," + // 1: author
                 "\"WIDTH\" INTEGER," + // 2: width
                 "\"HEIGHT\" INTEGER," + // 3: height
-                "\"MEDIA_ID\" INTEGER," + // 4: mediaId
+                "\"MEDIA_ID\" TEXT," + // 4: mediaId
                 "\"SOURCE\" TEXT," + // 5: source
                 "\"TITLE\" TEXT," + // 6: title
                 "\"URL\" TEXT," + // 7: url
@@ -89,9 +89,9 @@ public class PhotoDao extends AbstractDao<Photo, String> {
             stmt.bindLong(4, height);
         }
  
-        Long mediaId = entity.getMediaId();
+        String mediaId = entity.getMediaId();
         if (mediaId != null) {
-            stmt.bindLong(5, mediaId);
+            stmt.bindString(5, mediaId);
         }
  
         String source = entity.getSource();
@@ -129,7 +129,7 @@ public class PhotoDao extends AbstractDao<Photo, String> {
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // author
             cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // width
             cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // height
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // mediaId
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // mediaId
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // source
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // title
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // url
@@ -145,7 +145,7 @@ public class PhotoDao extends AbstractDao<Photo, String> {
         entity.setAuthor(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setWidth(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
         entity.setHeight(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
-        entity.setMediaId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setMediaId(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setSource(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setTitle(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setUrl(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));

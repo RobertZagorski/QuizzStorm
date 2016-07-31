@@ -1,0 +1,39 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.singlequiz.quizviews.answers.QuizAnswersFragment">
+
+    <LinearLayout
+        android:id="@+id/quiz_time_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <ProgressBar
+            android:id="@+id/quiz_progress"
+            android:layout_width="@dimen/margin_none"
+            android:layout_height="@dimen/margin_normal"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:progress="3"/>
+
+        <TextView
+            android:id="@+id/quiz_time"
+            style="@style/TextAppearance.AppCompat.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/margin_normal"
+            tools:text="00:20"/>
+
+    </LinearLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/answers_view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quiz_time_layout"/>
+
+</RelativeLayout>

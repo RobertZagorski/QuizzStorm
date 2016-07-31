@@ -1,5 +1,6 @@
 package pl.rzagorski.quizzstorm.model.database;
 
+import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -7,6 +8,8 @@ import android.database.sqlite.SQLiteStatement;
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 
 import pl.rzagorski.quizzstorm.model.database.Answer;
 
@@ -24,11 +27,13 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Order = new Property(1, Long.class, "order", false, "ORDER");
-        public final static Property Text = new Property(2, String.class, "text", false, "TEXT");
-        public final static Property IsCorrect = new Property(3, Boolean.class, "isCorrect", false, "IS_CORRECT");
+        public final static Property Quiz = new Property(1, Long.class, "quiz", false, "QUIZ");
+        public final static Property Order = new Property(2, Long.class, "order", false, "ORDER");
+        public final static Property Text = new Property(3, String.class, "text", false, "TEXT");
+        public final static Property IsCorrect = new Property(4, Boolean.class, "isCorrect", false, "IS_CORRECT");
     };
 
+    private Query<Answer> question_AnswersRefQuery;
 
     public AnswerDao(DaoConfig config) {
         super(config);
@@ -43,9 +48,10 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"ANSWER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
-                "\"ORDER\" INTEGER," + // 1: order
-                "\"TEXT\" TEXT," + // 2: text
-                "\"IS_CORRECT\" INTEGER);"); // 3: isCorrect
+                "\"QUIZ\" INTEGER," + // 1: quiz
+                "\"ORDER\" INTEGER," + // 2: order
+                "\"TEXT\" TEXT," + // 3: text
+                "\"IS_CORRECT\" INTEGER);"); // 4: isCorrect
     }
 
     /** Drops the underlying database table. */
@@ -64,19 +70,24 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
             stmt.bindLong(1, id);
         }
  
+        Long quiz = entity.getQuiz();
+        if (quiz != null) {
+            stmt.bindLong(2, quiz);
+        }
+ 
         Long order = entity.getOrder();
         if (order != null) {
-            stmt.bindLong(2, order);
+            stmt.bindLong(3, order);
         }
  
         String text = entity.getText();
         if (text != null) {
-            stmt.bindString(3, text);
+            stmt.bindString(4, text);
         }
  
         Boolean isCorrect = entity.getIsCorrect();
         if (isCorrect != null) {
-            stmt.bindLong(4, isCorrect ? 1L: 0L);
+            stmt.bindLong(5, isCorrect ? 1L: 0L);
         }
     }
 
@@ -91,9 +102,10 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
     public Answer readEntity(Cursor cursor, int offset) {
         Answer entity = new Answer( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // order
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // text
-            cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0 // isCorrect
+            cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1), // quiz
+            cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2), // order
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // text
+            cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0 // isCorrect
         );
         return entity;
     }
@@ -102,9 +114,10 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
     @Override
     public void readEntity(Cursor cursor, Answer entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setOrder(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
-        entity.setText(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setIsCorrect(cursor.isNull(offset + 3) ? null : cursor.getShort(offset + 3) != 0);
+        entity.setQuiz(cursor.isNull(offset + 1) ? null : cursor.getLong(offset + 1));
+        entity.setOrder(cursor.isNull(offset + 2) ? null : cursor.getLong(offset + 2));
+        entity.setText(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setIsCorrect(cursor.isNull(offset + 4) ? null : cursor.getShort(offset + 4) != 0);
      }
     
     /** @inheritdoc */
@@ -130,4 +143,18 @@ public class AnswerDao extends AbstractDao<Answer, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "AnswersRef" to-many relationship of Question. */
+    public List<Answer> _queryQuestion_AnswersRef(Long quiz) {
+        synchronized (this) {
+            if (question_AnswersRefQuery == null) {
+                QueryBuilder<Answer> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.Quiz.eq(null));
+                question_AnswersRefQuery = queryBuilder.build();
+            }
+        }
+        Query<Answer> query = question_AnswersRefQuery.forCurrentThread();
+        query.setParameter(0, quiz);
+        return query.list();
+    }
+
 }

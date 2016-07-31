@@ -1,7 +1,6 @@
 package pl.rzagorski.quizzstorm.dependencyinjection.list;
 
 import dagger.Subcomponent;
-import pl.rzagorski.quizzstorm.dependencyinjection.ActivityScope;
 import pl.rzagorski.quizzstorm.dependencyinjection.list.singlequiz.QuizComponent;
 import pl.rzagorski.quizzstorm.dependencyinjection.list.singlequiz.QuizModule;
 import pl.rzagorski.quizzstorm.ui.list.ListActivity;
@@ -9,7 +8,7 @@ import pl.rzagorski.quizzstorm.ui.list.ListActivity;
 /**
  * Created by Robert Zagórski on 07.06.2016.
  */
-@ActivityScope
+@ListScope
 @Subcomponent(
         modules = ListActivityModule.class
 )

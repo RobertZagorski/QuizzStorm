@@ -1,0 +1,38 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".ui.singlequiz.quizviews.start.QuizStartFragment">
+
+
+    <TextView
+        android:id="@+id/quiz_title"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/margin_normal"
+        tools:text="Quiz title"/>
+
+    <TextView
+        android:id="@+id/quiz_description"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/quiz_title"
+        android:padding="@dimen/margin_normal"
+        tools:text="Quiz description"/>
+
+    <Button
+        android:id="@+id/button_start"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/quiz_description"
+        android:layout_marginLeft="@dimen/margin_normal"
+        android:layout_marginRight="@dimen/margin_normal"
+        android:layout_marginTop="@dimen/margin_enormous"
+        android:padding="@dimen/margin_normal"
+        android:text="Rozpocznij"/>
+
+</RelativeLayout>

@@ -10,7 +10,7 @@ public class Photo {
     private String author;
     private Long width;
     private Long height;
-    private Long mediaId;
+    private String mediaId;
     private String source;
     private String title;
     private String url;
@@ -23,7 +23,7 @@ public class Photo {
         this.id = id;
     }
 
-    public Photo(String id, String author, Long width, Long height, Long mediaId, String source, String title, String url, String localUrl) {
+    public Photo(String id, String author, Long width, Long height, String mediaId, String source, String title, String url, String localUrl) {
         this.id = id;
         this.author = author;
         this.width = width;
@@ -67,11 +67,11 @@ public class Photo {
         this.height = height;
     }
 
-    public Long getMediaId() {
+    public String getMediaId() {
         return mediaId;
     }
 
-    public void setMediaId(Long mediaId) {
+    public void setMediaId(String mediaId) {
         this.mediaId = mediaId;
     }
 

@@ -36,7 +36,7 @@ public class ApiQuizExtendedModel implements LayerTransformer<Quiz> {
     private ApiCategory category;
     private Boolean isBattle;
     private Long created;
-    private List<ApiLatestResult> latestResults;
+    private List<ApiLatestResult> latestResultss;
     private Double avgResult;
     private Long resultCount;
     private Double cityAvg;
@@ -57,7 +57,7 @@ public class ApiQuizExtendedModel implements LayerTransformer<Quiz> {
     }
 
     public List<ApiLatestResult> getLatestResults() {
-        return latestResults;
+        return latestResultss;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ApiQuizExtendedModel implements LayerTransformer<Quiz> {
         quiz.setCityTime(cityTime);
         quiz.setCityCount(cityCount);
         quiz.setUserBattleDone(userBattleDone);
-        return null;
+        return quiz;
     }
 
     private Category createCategory() {

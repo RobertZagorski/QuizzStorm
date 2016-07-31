@@ -7,6 +7,7 @@ package pl.rzagorski.quizzstorm.model.database;
 public class Answer {
 
     private Long id;
+    private Long quiz;
     private Long order;
     private String text;
     private Boolean isCorrect;
@@ -18,8 +19,9 @@ public class Answer {
         this.id = id;
     }
 
-    public Answer(Long id, Long order, String text, Boolean isCorrect) {
+    public Answer(Long id, Long quiz, Long order, String text, Boolean isCorrect) {
         this.id = id;
+        this.quiz = quiz;
         this.order = order;
         this.text = text;
         this.isCorrect = isCorrect;
@@ -31,6 +33,14 @@ public class Answer {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Long quiz) {
+        this.quiz = quiz;
     }
 
     public Long getOrder() {

@@ -114,4 +114,5 @@ dependencies {
     testCompile testDependencies.junit
     testCompile testDependencies.mockito
     testApt diDependencies.daggerCompiler
+    compile 'com.android.support:support-v4:23.4.0'
 }

@@ -27,7 +27,7 @@ public class GreendaoGenerator {
         photoEntity.addStringProperty("author");
         photoEntity.addLongProperty("width");
         photoEntity.addLongProperty("height");
-        photoEntity.addLongProperty("mediaId");
+        photoEntity.addStringProperty("mediaId");
         photoEntity.addStringProperty("source");
         photoEntity.addStringProperty("title");
         photoEntity.addStringProperty("url");
@@ -48,6 +48,7 @@ public class GreendaoGenerator {
 
         Entity answerEntity = schema.addEntity("Answer");
         answerEntity.addIdProperty();
+        Property answerQuestionId = answerEntity.addLongProperty("quiz").getProperty();
         answerEntity.addLongProperty("order");
         answerEntity.addStringProperty("text");
         answerEntity.addBooleanProperty("isCorrect");
@@ -62,6 +63,7 @@ public class GreendaoGenerator {
         questionEntity.addLongProperty("order");
 
         questionEntity.addToOne(photoEntity, questionPhotoProperty).setName("photoRef");
+        questionEntity.addToMany(answerEntity, answerQuestionId).setName("AnswersRef");
 
         Entity quizLatestResults = schema.addEntity("QuizResult");
         quizLatestResults.addIdProperty();

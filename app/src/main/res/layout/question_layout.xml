@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/quiz_question"
+        style="@style/TextAppearance.AppCompat.Title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_giant"
+        android:layout_marginRight="@dimen/margin_giant"
+        android:padding="@dimen/margin_normal"
+        tools:text="Czy wiesz, że...?"/>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <RadioGroup
+        android:id="@+id/answer_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/margin_giant"
+        android:layout_marginRight="@dimen/margin_giant"
+        android:layout_marginTop="@dimen/margin_cosmic">
+
+    </RadioGroup>
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/list_double_row_height"
+        android:layout_marginLeft="@dimen/margin_giant"
+        android:layout_marginRight="@dimen/margin_giant"
+        android:layout_marginTop="@dimen/margin_cosmic"
+        android:text="Następne pytanie"/>
+
+</LinearLayout>

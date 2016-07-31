@@ -70,7 +70,8 @@ public class GetQuizDetailsUseCase implements UseCase<Quiz> {
                     public Observable<Quiz> call(ApiQuizExtendedModel apiQuizExtendedModel) {
                         return insertApiQuizIntoDatabase(apiQuizExtendedModel);
                     }
-                });
+                })
+                .compose(ObservableUtils.<Quiz>applySchedulers());
     }
 
     private Observable<Quiz> insertApiQuizIntoDatabase(ApiQuizExtendedModel apiQuizExtendedModel) {
@@ -94,6 +95,11 @@ public class GetQuizDetailsUseCase implements UseCase<Quiz> {
                     @Override
                     public Observable<Quiz> call(Quiz quiz) {
                         return mDatabaseManager.insertQuiz(quiz);
+                    }
+                }).flatMap(new Func1<Quiz, Observable<Quiz>>() {
+                    @Override
+                    public Observable<Quiz> call(Quiz quiz) {
+                        return mDatabaseManager.selectQuiz(quiz.getId());
                     }
                 });
     }

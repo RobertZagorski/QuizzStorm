@@ -1,8 +1,14 @@
 package pl.rzagorski.quizzstorm.dependencyinjection.list.singlequiz;
 
 
+import javax.inject.Named;
+
 import dagger.Module;
 import dagger.Provides;
+import pl.rzagorski.quizzstorm.data.api.ApiManager;
+import pl.rzagorski.quizzstorm.data.database.DatabaseManager;
+import pl.rzagorski.quizzstorm.data.interactor.GetQuizDetailsUseCase;
+import pl.rzagorski.quizzstorm.data.interactor.UseCase;
 import pl.rzagorski.quizzstorm.dependencyinjection.ActivityScope;
 import pl.rzagorski.quizzstorm.model.database.Quiz;
 import pl.rzagorski.quizzstorm.ui.singlequiz.QuizPresenter;
@@ -19,14 +25,8 @@ public class QuizModule {
     }
 
     @Provides
-    @ActivityScope
+    @QuizScope
     Quiz provideQuiz() {
         return quiz;
-    }
-
-    @Provides
-    @ActivityScope
-    QuizPresenter provideQuizPresenter(Quiz quiz) {
-        return new QuizPresenter(quiz);
     }
 }

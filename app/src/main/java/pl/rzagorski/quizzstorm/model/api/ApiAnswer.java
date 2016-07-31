@@ -14,6 +14,7 @@ public class ApiAnswer implements LayerTransformer<Answer> {
     private ApiPhoto image;
     private Long order;
     private String text;
+    private Long isCorrect;
 
     @VisibleForTesting
     void setImage(ApiPhoto image) {
@@ -35,6 +36,7 @@ public class ApiAnswer implements LayerTransformer<Answer> {
         Answer answer = new Answer();
         answer.setOrder(order);
         answer.setText(text);
+        answer.setIsCorrect(isCorrect != null && isCorrect.equals(1L));
         return answer;
     }
 }

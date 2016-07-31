@@ -8,7 +8,7 @@ import pl.rzagorski.quizzstorm.dependencyinjection.list.singlequiz.quizactivity.
 /**
  * Created by Robert Zagórski on 07.06.2016.
  */
-@ActivityScope
+@QuizScope
 @Subcomponent(
         modules = QuizModule.class
 )

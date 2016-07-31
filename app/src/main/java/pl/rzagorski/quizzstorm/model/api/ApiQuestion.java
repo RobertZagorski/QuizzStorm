@@ -11,7 +11,7 @@ import pl.rzagorski.quizzstorm.utils.interfaces.LayerTransformer;
  * Created by Robert Zagórski on 27.07.2016.
  */
 public class ApiQuestion implements LayerTransformer<Question> {
-    private ApiPhoto image;
+    private ApiPhoto images;
     private List<ApiAnswer> answers;
     private String text;
     private String answer;
@@ -25,7 +25,7 @@ public class ApiQuestion implements LayerTransformer<Question> {
     @Override
     public Question transform() {
         Question question = new Question();
-        question.setPhotoRef(image.transform());
+        //question.setPhotoRef(images.transform());
         question.setText(text);
         question.setAnswer(answer);
         question.setType(type);

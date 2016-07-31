@@ -9,14 +9,14 @@ import pl.rzagorski.quizzstorm.utils.interfaces.LayerTransformer;
 /**
  * The model of a photo, It contains the url that need to be
  * used to fetch the photo.
- *
+ * <p/>
  * Created by Robert Zagórski on 27.07.2016.
  */
 public class ApiPhoto implements LayerTransformer<Photo> {
     private String author;
-    private Long width;
-    private Long height;
-    private Long mediaId;
+    private String width;
+    private String height;
+    private String mediaId;
     private String source;
     private String title;
     private String url;
@@ -26,8 +26,8 @@ public class ApiPhoto implements LayerTransformer<Photo> {
         Photo photo = new Photo();
         photo.setId(getId(url));
         photo.setAuthor(author);
-        photo.setWidth(width);
-        photo.setHeight(height);
+        photo.setWidth(Long.valueOf(width));
+        photo.setHeight(Long.valueOf(height));
         photo.setSource(source);
         photo.setMediaId(mediaId);
         photo.setTitle(title);
